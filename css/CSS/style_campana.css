@@ -1,0 +1,380 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	background-color: #dfeff9;
+	margin: 0px;
+	padding: 0px;
+	scrollbar-base-color: MEDIUM;
+	scrollbar-face-color: MEDIUM;
+	scrollbar-track-color: #333333;
+	scrollbar-highlight-color: LIGHT;
+	scrollbar-3dlight-color: MEDIUM;
+	scrollbar-shadow-color: MEDIUM;
+	scrollbar-darkshadow-color: MEDIUM;
+	scrollbar-arrow-color: #333333;
+	 
+  background-image: url(../login/imagenes/logo_crm.png);
+  background-repeat: no-repeat; }
+}
+
+.Div_Indicadores {
+	position:absolute;
+	
+	background-color: #cccccc;
+	border: 2px solid gray;
+	text-align: center;
+
+	padding: 10px;
+	width:160px;
+	top: 10px;
+	text-align:center;
+	height: 29px;
+	left:30px;
+}
+
+.Div_Indicador {
+	position:absolute;
+	float:right;
+	 
+	 
+ 
+	right: 36px;
+
+ 
+	top: 131px;
+	 
+}
+.Div_Alarma {
+	position:absolute;
+	float:right;
+	 
+	right: 40px;
+
+	top: 65px;
+	 
+}
+
+.Div_Agendados{
+	position:absolute;
+	float:right;
+	right: 34px;
+	top: 185px;
+	 
+}
+
+.TableInfoCampaign {
+	border: 0px solid gray;
+	color: #ffffff;
+}
+
+.TitleCampaign{
+	color: #ffffff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13pt;
+	font-weight: bold;
+}
+
+.FORMS_rol {
+	width: 100%;
+}
+
+.DOMO_Div_Forms {
+
+}
+
+.DOMO_Div_Titulos {
+
+}
+
+#DOMO_Div_Body {
+	width:100%;
+	overflow: auto;
+	scrollbar-base-color: MEDIUM;
+	scrollbar-face-color: MEDIUM;
+	scrollbar-track-color: #999999;
+	scrollbar-highlight-color: LIGHT;
+	scrollbar-3dlight-color: MEDIUM;
+	scrollbar-shadow-color: MEDIUM;
+	scrollbar-darkshadow-color: MEDIUM;
+	scrollbar-arrow-color: #333333;
+}
+
+.DOMO_Div_Crono {
+	padding: 8px;
+	height: 34px;
+	color: #ffffff;
+}
+
+.DOMO_Div_Search {  
+	position: absolute; 
+	overflow: auto; 
+	top: 20px; 
+	left: 160px; 
+	height: 60px; 
+	width: 780px;
+}
+
+
+
+.DOMO_Div_CTI {
+
+}
+
+.DOMO_Relations {
+
+}
+
+.DOMO_Div_Relations {
+	background-color: #cccccc;
+	border: 2px solid gray;
+	text-align: right; 
+	float:right;
+	position:absolute;
+	right: 28px;
+	padding: 10px;
+}
+
+.texto08 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	vertical-align: text-top;
+	color: #333333;
+}
+
+.LinkMGInactive {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.MRCBackIzqMainTable {
+	background-image: url(IMG_ENC/MRC_IzqBackground01.jpg);
+	background-repeat: repeat-y;
+	background-position: left top;
+}
+
+.DOMO_Div_Tab_Busqueda {
+	border: 0px solid gray;
+	text-align: right; 
+	float:right;
+	position:absolute;
+	right: 140px;
+}
+
+#TabBusqueda {
+	cursor: hand;
+	color: #ffffff;
+}
+
+
+
+.MRCBackDerMainTable {
+	background-image: url(IMG_ENC/MRC_DerBackground01.jpg);
+	background-repeat: repeat-y;
+	background-position: right top;
+}
+
+td {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+}
+
+.ShadowMNG {
+	background-image: url(IMG_MNG/MNG_LeftShadow00.jpg);
+	background-repeat: repeat-y;
+	background-position: left top;
+}
+
+a {
+	text-decoration: none;
+}
+
+.LinkMGActive {
+	color: #333333;
+	text-decoration: none;
+}
+
+
+
+.FICTopShadow {
+	background-image: url(IMG_MNG/SMNG_TopShadow00.jpg);
+	background-repeat: repeat-x;
+	background-position: left top;
+}
+
+input {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+}
+
+select {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+}
+
+.texto14 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+.SeparaH3 {
+	background-image: url(IMG_COM/Separa333333.gif);
+	background-repeat: repeat-x;
+	background-position: left center;
+}
+
+
+
+.DOMO_aForm {
+	color: #333333;
+	text-decoration: none;
+}
+
+.DOMO_aFormTabs {
+	color: #333333;
+	text-decoration: none;
+}
+.aChangePass {
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+.Domo_View_Head {
+	background-color: #FFFFFF;
+	font-weight:bold;
+	
+}
+
+.Domo_View_Fila_par {
+	text-align: left;
+	background-color: #e1e1ff;
+	color: #333333;
+}
+
+.Domo_View_Fila_impar {
+	text-align: left;
+	background-color: #f2f2ff;
+	color: #333333;
+}
+
+.Domo_View_Paginacion {
+	text-align: center;
+	color: #333333;
+}
+
+.DOMO_view {
+
+	color: #333333;
+	scrollbar-base-color: MEDIUM;
+	scrollbar-face-color: MEDIUM;
+	scrollbar-track-color: #ffffff;
+	scrollbar-highlight-color: LIGHT;
+	scrollbar-3dlight-color: MEDIUM;
+	scrollbar-shadow-color: MEDIUM;
+	scrollbar-darkshadow-color: MEDIUM;
+	scrollbar-arrow-color: #333333;
+}
+
+.DOMO_view_label {
+	vertical-align: text-top;
+	text-align: left;
+}
+
+.DOMO_view_value {
+	vertical-align: text-top;
+	text-align: left;
+}
+
+.boton {
+	height: 26pt;
+	border-style:solid;
+	border-width:1px;
+	border-color:#CCCCCC;
+	text-align:center;
+	font-weight:bold;
+	font-family:arial;
+	cursor: hand;
+}
+
+.boton {
+	height: 26pt;
+	border-style:solid;
+	border-width:1px;
+	border-color:#fff;
+	text-align:center;
+	font-weight:bold;
+	font-family:arial;
+	cursor: hand;
+}
+
+
+
+.Domo_Body_Table  {
+	width:100%;
+}
+
+.Domo_Body_Relacion_Table {
+	width:100%;
+}
+
+.DOMOTituloForm {
+	color: #FFFFFF;
+}
+
+.DOMOTituloFormRelacion {
+	color: #FFFFFF;
+}
+
+.thumbnail2 {
+	position: relative;
+	z-index: 0;
+}
+
+.thumbnail2:hover {
+	background-color: transparent;
+	z-index: 50;
+}
+
+.thumbnail2 span{ /*CSS for enlarged image*/
+	position: absolute;
+	background-color: lightyellow;
+	padding: 5px;
+	left: -1000px;
+	border: 1px dashed gray;
+	visibility: hidden;
+	color: black;
+	text-decoration: none;
+}
+
+.thumbnail2 span img{ /*CSS for enlarged image*/
+	border-width: 0;
+	padding: 2px;
+}
+
+.thumbnail2:hover span{ /*CSS for enlarged image on hover*/
+	visibility: visible;
+	top: 15;
+	width:300px;
+	font-size:12px;
+	left: 30px; /*position where enlarged image should offset horizontally */
+}
+
+
+.btnForm {
+	background-image: url(IMG_DEF/btn_middle.gif);
+	background-repeat: repeat-x;
+	height: 19px;
+	width: 140pt;
+	cursor: hand;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top:2px;
+	text-align: center;
+	font-family: arial,sans-serif;
+	font-size: 9pt;
+	font-weight: bold;
+	color: #ffffff;
+	text-decoration: none;
+	border: 0px solid gray;
+	margin-left:11px;
+}

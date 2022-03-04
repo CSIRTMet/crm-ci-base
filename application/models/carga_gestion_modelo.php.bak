@@ -1,0 +1,66 @@
+<?php
+
+class Carga_gestion_modelo extends CI_Model
+{	
+ 
+    function __construct()
+    {
+        // Call the Model constructor
+        parent::__construct();
+    }
+    
+	function index()
+	{
+		
+	}
+	
+	function get_cargas_campana($campana){
+		$sql = "select *, (select tipo_carga.nombre from tipo_carga where tipo_carga.id_tipo_carga = carga.id_tipo_carga ) as tipo,
+		(select count(*) from carga_cliente_mkt where carga_cliente_mkt.id_carga = carga.id_carga) as registros from carga where id_campana = ?";
+		$query = $this->db->query($sql,array($campana));
+		return $query->result();
+	}
+	
+	function add_carga($data){
+	
+		$data["tipo_campana"] = $this->session->userdata("campana_tipo");
+		$this->db->insert('carga',$data);
+		return $this->db->insert_id();
+	}
+	
+
+	function edit_carga($data){
+		$this->db->update('carga',$data,array('id_carga'=>$data['id_carga']));
+	}
+	
+	function del_carga($id){
+	
+	/*  sacar de la tabla carga
+		sacar de la tabla carga_clinte
+		sacar clientes de la carga de campana_cliente, PREOCUPARSE DE LOS DUPLICADOS 
+		sacar clientes de la carga de lista_cliente	si existen (puede tomarse en cuenta la tabla campana_cliente resultante )
+		sacar clientes de la carga de la tabla cliente
+		sacar clientes sacados de la tabla cliente de la tabla deuda, pago cuota, direccion, telefono, email, judicial
+		sacar clientes de la carga de la tabla gestion
+
+	 */ 
+
+
+		$tables = array('carga');
+		$this->db->where('id_carga',$id);
+		$this->db->where('nombre_archivo is null');
+		$this->db->delete($tables);  
+	}
+	
+	function del_gestion_clientes_eliminados($id){
+	  
+	}
+	
+	
+
+
+	
+	
+	
+}
+?>

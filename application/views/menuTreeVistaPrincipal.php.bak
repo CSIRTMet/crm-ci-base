@@ -1,0 +1,50 @@
+
+		
+		    <div class="divFormsBox" id="rol_x">
+			<li class='open' >
+			<span class="folder" style='cursor: pointer'>&nbsp;&nbsp;Ejecutivos</span>
+			<ul>
+				<li id="menuFormulario_" class="menuFormulario"><span class="file">
+					<a href="#" id="a_idform"  class="menu_2" onclick="cargar_cliente()">
+					Actualizar registro
+					</a>
+				    </span>
+				</li>
+				<?php
+				$tipo_campana = $this->session->userdata('campana_tipo');	
+				if($tipo_campana == 1){
+				?>
+				<li id="menuFormulario_" class="menuFormulario"><span class="file">
+					<a href="#" id="a_idform"  class="menu_2" onclick="cargar_compromisos()">
+					Ver mis compromisos
+					</a>
+				    </span>
+				</li>
+				<?php
+				}
+				?>
+				<li id="menuFormulario_" class="menuFormulario"><span class="file">
+					<a href="#" id="a_idform"  class="menu_2" onclick="cargar_mis_gestiones()">
+					Ver mis Gestiones del d&iacute;a
+					</a>
+				    </span>
+				</li>
+				
+				<li id="menuFormulario_" class="menuFormulario"><span class="file">
+					<a href="#" id="a_idform"  class="menu_2" onclick="consultar_codigo_telefonico()">
+					C&oacute;digos telef&oacute;nicos</a>
+				    </span>
+				</li>
+	        </ul>
+			</li>
+			</div>
+		
+	
+	
+
+	
+
+	
+	 
+	
+	 

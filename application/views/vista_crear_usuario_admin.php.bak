@@ -1,0 +1,248 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+
+<style type="text/css">
+<!--
+
+#encabezado_campana {
+
+	position:relative;
+	width:100%;
+	text-align:justify;
+	padding:0px;
+	
+	
+}
+
+#div_vista_principal_administracion {
+
+	position:relative;
+	width:95%;
+	text-align: center;
+	padding-bottom:1px;
+	padding-left:7px;
+	padding-right:7px;
+	margin:0 auto 0 auto;
+	
+	
+	
+}
+
+#div_vista_usuario_administracion {
+
+	position:relative;
+	width:95%;
+	text-align: center;
+	padding-bottom:1px;
+	padding-left:7px;
+	padding-right:7px;
+	margin:0 auto 0 auto;
+	
+	
+	
+}
+
+table { 
+
+border-style:solid;
+    border-width:1px;
+    border-color:#9aaab4;
+    padding:4pt;
+    text-align:left;
+    margin-left:10px;
+    margin-right:6px;
+ background-color: #edf1f3 }
+ 
+ H1 {
+    font-size:150%;
+    padding-left: 10px;
+    text-align: left;
+}
+H2 {
+    font-size:150%;
+    padding-left: 10px;
+    text-align: left;
+}
+H3 {
+    padding-left: 10px;
+    text-align: left;
+}
+
+H4 {
+    padding-left: 10px;
+    text-align: left;
+}
+H5 {
+    padding-left: 10px;
+    text-align: left;
+}
+
+-->
+</style>
+
+
+<script type="text/javascript"> 
+/*
+	*#######################
+	*     ON PAGE LOAD
+	*#######################
+	*/
+	
+		$("#select_contactabilidad").change(function(){
+		   $('#select_respuesta').html('<option value=0>Cargando...</option>');
+		   $('#select_sub_respuesta').html('<option value=0>--</option>');
+			var id = $(this).val();
+			var url='<?php echo base_url() ?>index.php/respuesta/get_respuesta_por_contactabilidad/';
+			
+			$.post(url, { 'id':id }, function(data) {
+					$('#select_respuesta').html(data);
+			});			
+		});
+		
+		
+		
+		$("#select_respuesta").change(function(){
+		    $('#select_sub_respuesta').html('<option value=0>Cargando...</option>');
+			var id = $(this).val();
+			var url='<?php echo base_url() ?>index.php/sub_respuesta/get_sub_respuesta_por_respuesta/';
+			$.post(url, { 'id':id }, function(data) {
+				$('#select_sub_respuesta').html(data);
+			});			
+		
+		});
+	
+	    /*
+		*#######################
+		* TRAE RESPUESTA DE CLIENTE DESDE CONTROLADOR
+		*#######################*/
+
+
+
+</script>
+
+
+<script type="text/javascript"> 
+/*
+	*#######################
+	*   
+	*#######################
+*/
+
+
+
+function mostrar() {
+  $("#pop").fadeIn('slow');
+} //checkHover
+
+function cerrarPop() {
+ $("#pop").hide();
+} 
+
+
+function enviar_formulario() {
+	
+		$.post("<?php echo base_url() ?>index.php/gestion/ingresar_gestion", { 
+		
+		
+			  id_cliente: $("#txt_id_cliente").val()
+			 ,id_usuario: $("#txt_id_usuario").val()
+			 ,id_accion: $("#select_accion").val()
+			 ,id_contactabilidad: $("#select_contactabilidad").val()
+			 ,id_respuesta: $("#select_respuesta").val()
+			 ,id_sub_respuesta: $("#select_sub_respuesta").val()
+			 ,nombre_contacto: $("#txt_nombre_contacto").val()
+			 ,apaterno_contacto: $("#txt_apaterno").val()
+			 ,amaterno_contacto: $("#txt_amaterno").val()
+			 ,glosa: $("#txt_glosa").val()
+			 
+			 
+		}, function (data) {
+	
+		    if (data.length >3)  //viene un error y lo muestro
+			{
+				alert(data);
+			}
+			else 
+			{
+				cargar_cliente(); //sino viene error , cargo el cliente
+			}
+		});
+ 	}
+	
+
+</script>
+<link href="<?php echo base_url() ?>/css/ext-all.css" rel="stylesheet" type="text/css" />
+<link href="../../css/ext-all.css" rel="stylesheet" type="text/css" />
+<title>KUBO COBRAZA - ADMINISTRACION</title>
+
+</head>
+<body>
+<div id="div_vista_principal_administracion">
+<?php $this->load->view("includes/encabezado");?>
+  <table width="100%" border="0" cellpadding="1" cellspacing="1" class="x-progress-inner" >
+    
+    <tr>
+      <td  class="x-border-layout-ct"><strong>ADMINISTRACION DEL SISTEMA - Crear usuario [<a href="<?php echo base_url() ?>index.php/usuario_admin/form_listar_usuario/">Volver al listado</a>] </strong></td>
+    </tr>
+  </table>
+</div>
+<div id="div_vista_usuario_administracion">
+  
+  
+  <?php echo form_open("usuario_admin/crear_usuario");?>
+  <?php echo validation_errors();?>
+  <?php if(isset($mensaje)) echo $mensaje; ?>
+  
+  
+  
+  <table width="100%" border="0" cellpadding="1" cellspacing="1" class="x-grid-page">
+
+
+    
+	<tr>
+	  <td width="22%" nowrap="nowrap"><span class="titleFormBody">RUT</span></td>
+	  <td width="78%" nowrap="nowrap" class="x-grid3-row-over"><span class="titleFormBody">
+	    <input name="rut" type="text" id="rut" value="<?php echo set_value('rut', ''); ?>" />
+	  </span></td>
+    </tr>
+	<tr>
+	  <td nowrap="nowrap"><span class="titleFormBody">NOMBRE USUARIO </span></td>
+	  <td nowrap="nowrap" class="x-grid3-row-over"><span class="titleFormBody">
+	    <input name="nombre_usuario" type="text" id="nombre_usuario" value="<?php echo set_value('nombre_usuario', ''); ?>"/>
+	  </span></td>
+    </tr>
+	<tr>
+	  <td nowrap="nowrap">CLAVE</td>
+	  <td nowrap="nowrap" class="x-grid3-row-over"><span class="titleFormBody">
+	    <input name="clave" type="text" id="clave" value=""/>
+	  </span></td>
+    </tr>
+	<tr>
+	  <td nowrap="nowrap"><span class="titleFormBody">NOMBRE</span></td>
+	  <td nowrap="nowrap" class="x-grid3-row-over"><span class="titleFormBody">
+	    <input name="nombre" type="text" id="nombre" value="<?php echo set_value('nombre', ''); ?>" />
+	  </span></td>
+    </tr>
+	<tr>
+	  <td nowrap="nowrap"><span class="titleFormBody">TIPO</span></td>
+	  <td nowrap="nowrap" class="x-grid3-row-over"> 
+	    <select name="tipo_usuario" id="tipo_usuario">
+	      <option value="0">*Seleccione*</option>
+		  <option value="1" <?php echo set_select('tipo_usuario', '1', TRUE); ?>>Administrador</option>
+		  <option value="2" <?php echo set_select('tipo_usuario', '2', TRUE); ?>>Supervisor</option>
+		  <option value="3" <?php echo set_select('tipo_usuario', '3', TRUE); ?>>Agente</option>	  
+        </select>      </td>
+    </tr>
+	<tr>
+	  <td nowrap="nowrap">&nbsp;</td>
+	  <td nowrap="nowrap">&nbsp;</td>
+    </tr>
+	<tr>
+      <td nowrap="nowrap">&nbsp;</td>
+      <td nowrap="nowrap"><input name="Guardar" type="submit" id="Guardar" value="Guardar" /></td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

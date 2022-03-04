@@ -1,0 +1,413 @@
+<?php
+
+class Lista_gestion extends CI_Controller 
+{
+
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->helper('gestion');
+		$this->load->model('lista_gestion_modelo','lista');
+		// descomentar parte de abajo una vez puesto en produccion y haya un link para acceder a este controlador
+		
+		 if(!is_supervisor_logged($this->session->userdata('is_logged_in'),$this->session->userdata('tipo_usuario'))){
+			redirect(base_url().'index.php/usuario/logout', 'refresh');
+		}
+		if(!is_campana_set($this->session->userdata('campana'))){
+			redirect(base_url().'index.php/campana_gestion/index', 'refresh');
+		} 
+	}
+	
+	function index()
+	{
+		$data = $this->form_listar_lista_gestion();
+		//$this->load->view('vista_listar_lista_gestion',$data);
+	}
+	
+
+	function form_listar_lista_gestion()
+	{
+		$campana = $this->session->userdata('campana');
+		$data['listas'] = $this->lista->get_listas_campana($campana);
+		$this->load->view('vista_listar_lista_gestion',$data);
+	}
+	
+	function form_crear_lista_gestion()
+	{
+		$this->load->view('vista_crear_lista_gestion');
+	}
+	
+	function crear_lista_gestion()
+	{
+		$config = array(
+		       array(
+		             'field'   => 'nombre',
+		             'label'   => 'Nombre de Lista',
+		             'rules'   => 'required|max_length[50]'
+		          ),
+			   array(
+		             'field'   => 'numero_gestiones',
+		             'label'   => 'Numero de gestiones',
+		             'rules'   => 'required|is_natural_no_zero'
+		          ),
+		       array(
+		             'field'   => 'id_campana',
+		             'label'   => 'Campaña',
+		             'rules'   => 'required|is_natural_no_zero'
+		          ));
+		$this->form_validation->set_rules($config);
+		
+		$data['id_campana'] = $this->input->get_post("id_campana");
+		$data['nombre'] = $this->input->get_post("nombre");
+		$data['numero_gestiones'] = $this->input->get_post("numero_gestiones");
+		$data['total_registros'] = 0;
+		$data['estado_lista'] = 0;
+		
+		if($this->form_validation->run() == TRUE){
+			$this->lista->add_lista($data);
+			$this->form_listar_lista_gestion();
+			echo '<body onload="opener.location.reload(); window.close();"></body>';
+			
+			//redirect(base_url().'index.php/lista_gestion/form_listar_lista_gestion', 'refresh');
+		}
+		else{
+			$data['msg'] = "Lista no pudo ser creada..."; 
+			$this->load->view('vista_crear_lista_gestion',$data);
+		}
+	}
+	
+	function form_asignar_usuario_lista()
+	{
+		$campana = $this->session->userdata('campana');
+		$data['usuarios'] = $this->lista->get_usuarios_not_lista($campana);
+		$this->load->view('vista_asignar_usuarios_lista_gestion',$data);
+	}
+	
+	function asignar_usuario_lista_gestion()
+	{
+		$lista = $this->input->get_post("lista");
+		$usuarios = $this->input->get_post("usuarios");
+		if($this->form_validation->is_natural_no_zero($lista))
+		{
+			foreach($usuarios as $usuario)
+			{ 
+				$this->lista->add_usuario_lista($lista,$usuario);
+			}
+			echo '<body onload="opener.location.reload(); window.close();"></body>';
+		}
+	}
+	
+	function borrar_lista($id)
+	{
+		$this->lista->del_lista($id);
+		redirect(base_url().'index.php/lista_gestion/index', 'refresh');
+	}
+	
+	
+	/////////////////////////////////// funciones para ejecutar el extractor y filtrado de listas //////////////////////////////////////////
+	
+	function form_crear_filtro_lista_gestion($campana,$id_lista)
+	{
+		//$campana = $this->session->userdata('campana');  al agregar esta linea borrar el parametro de entrada
+		$this->lista->create_view_campana($campana);
+		$this->load->library('consulta');
+		$consulta = new Consulta();
+		$consulta->addSources("vista_cliente_".$campana); 
+		$fields = $this->lista->get_fields_type_view($campana);
+		
+		foreach($fields as $field){
+			$consulta->addFields($field->Field);
+		}
+		$this->session->set_userdata('consulta',serialize($consulta));
+		$this->session->set_userdata('valueParentesis','');
+		
+		$data['listas'] = $this->lista->get_lista_result($id_lista);
+		$this->load->view('vista_crear_filtro_lista_gestion',$data);
+	}
+	
+	
+	function form_segmentacion_rapida_lista_gestion($campana,$id_lista)
+	{
+
+		$data['listas'] = $this->lista->get_lista_extendido_result($id_lista);
+		$this->load->view('vista_segmentador_rapido_lista_gestion',$data);
+	}
+	
+	function segmentar_rapido_lista_gestion()
+	{
+
+		$id_lista = $this->input->get_post("id_lista");
+		
+		$sin_gestion = $this->input->get_post("sin_gestion");
+		$agendamiento_privado = $this->input->get_post("agendamiento_privado");
+		$agendamiento_publico = $this->input->get_post("agendamiento_publico");
+		$pendiente = $this->input->get_post("pendiente");
+		
+	
+	 	if(!$sin_gestion) $sin_gestion=0;
+		if(!$agendamiento_privado) $agendamiento_privado=0;
+		if(!$agendamiento_publico) $agendamiento_publico=0;
+		if(!$pendiente) $pendiente=0;
+		 
+		
+ 		$vector_estado_registro= "100"; 
+		
+		if($sin_gestion==1) $vector_estado_registro  =$vector_estado_registro.","."0";
+		if($agendamiento_privado==1) $vector_estado_registro = $vector_estado_registro.","."1";
+		if($agendamiento_publico==1) $vector_estado_registro = $vector_estado_registro.","."2";
+		if($pendiente==1) $vector_estado_registro = $vector_estado_registro.","."3";
+ 		//echo "sin_gestion: $sin_gestion agendamiento_privado $agendamiento_privado agendamiento_publico $agendamiento_publico pendiente $pendiente  vector_estado_registro $vector_estado_registro"; 
+ 
+		$data['resultado'] = $this->lista->set_segmentacion_rapida_lista($id_lista,$sin_gestion,$agendamiento_privado,$agendamiento_publico,$pendiente, $vector_estado_registro);
+
+
+		$data['listas'] = $this->lista->get_lista_extendido_result($id_lista);
+		$this->load->view('vista_segmentador_rapido_lista_gestion',$data);	
+		
+	}
+	
+	function ajax_lista_usuarios($lista,$campana)
+	{
+		$data['usuarios_lista'] = $this->lista->get_usuarios_lista($lista);
+		$data['usuarios_no_lista'] = $this->lista->get_usuarios_not_lista($campana,$lista);
+		$this->load->view('ajax_lista/ajax_lista_usuarios',$data);
+	}
+	
+	function ajax_lista_condiciones()
+	{
+		$this->load->library('consulta');
+		$consulta = unserialize($this->session->userdata('consulta'));
+		
+		$data["lst_condiciones"] = $consulta->getConditions();
+		$data["lst_andOr"] = $consulta->getAndor();
+		$data["valueParentesis"] = str_split($consulta->getValueParentesis());
+		$data["valParentesis"] = 0;
+		$data["indice"] = 0;
+		
+		$this->load->view('ajax_lista/ajax_lista_condiciones',$data);
+	}
+	
+	function form_procesar_lista()
+	{
+		$this->load->library('consulta');
+		$rows = 0;
+		$config = array(
+		       array(
+		             'field'   => 'usuarios',
+		             'label'   => 'Usuarios Asignados',
+		             'rules'   => 'required'
+		          ),
+		       array(
+		             'field'   => 'lista',
+		             'label'   => 'Lista',
+		             'rules'   => 'required|is_natural_no_zero'
+		          ),
+			   array(
+		             'field'   => 'campana',
+		             'label'   => 'Campaña',
+		             'rules'   => 'required|is_natural_no_zero'
+		          ));
+		$this->form_validation->set_rules($config);
+		
+		$usuarios = $this->input->get_post("usuarios");
+		$lista = $this->input->get_post("lista");
+		$campana = $this->input->get_post("campana");
+		$tipo_campana = $this->session->userdata('campana_tipo');
+		
+		if($this->form_validation->run() == FALSE)
+		{
+			echo "no válido";
+		}
+		else{
+			$registro = $this->lista->get_lista($lista);
+			$this->lista->del_usuarios_lista($lista);
+			foreach($usuarios as $user)
+			{
+				$this->lista->add_usuario_lista($lista,$user);
+			}
+			if($registro->total_registros==0){
+				$consulta = unserialize($this->session->userdata('consulta'));
+				$condicion = $consulta->get_String_Conditions();
+				$this->lista->clean_lista_cliente($lista,$tipo_campana);
+				$rows = $this->lista->procesing_list($lista,$campana,$condicion,$tipo_campana );
+
+			    echo $rows;
+			}
+		}
+	}
+	
+	function open_popup_condiciones($campana)
+	{
+		$data['vista'] = 'vista_cliente_'.$campana;
+		$data['campana'] = $campana;
+		$data['fields'] = $this->lista->get_fields_type_view($campana);
+		$this->load->view('ajax_lista/condiciones.php',$data);
+	}
+	
+	function add_condiciones()
+	{
+		$this->load->library('consulta');
+		$config = array(
+				array(
+		             'field'   => 'oRadio',
+		             'label'   => 'Operador',
+		             'rules'   => 'required'
+		          ),
+				array(
+		             'field'   => 'columna',
+		             'label'   => 'Columna',
+		             'rules'   => 'required'
+		          ),
+				array(
+		             'field'   => 'campana',
+		             'label'   => 'Campaña',
+		             'rules'   => 'required|is_natural_no_zero'
+		          ),
+				array(
+		             'field'   => 'condicion',
+		             'label'   => 'Condicion',
+		             'rules'   => 'required'
+		        ));
+		$this->form_validation->set_rules($config);
+		$campana = $this->input->get_post("campana");
+		$oradio = $this->input->get_post("oRadio");
+		$columna = $this->input->get_post("columna");
+		$condicion = $this->input->get_post("condicion");
+		$texto = $this->input->get_post("txtCharNum");
+		$fecha = $this->input->get_post("Date");
+		
+		if($this->form_validation->run() == FALSE){
+			if($this->form_validation->is_natural_no_zero($campana))
+				$this->open_popup_condiciones($campana);
+		}
+		else{
+			$sentencia = "";
+			$campo_tipo = array();
+			$fecha_enviada = array();
+			$campo_tipo = split("/",$columna);
+			$fecha_enviada = split("/",$fecha);
+			
+			if($this->form_validation->required($fecha)){
+				$parametro="DATE_FORMAT(".$campo_tipo[1].",'%Y%m%d') ";
+				$valor=$fecha_enviada[2].$fecha_enviada[1].$fecha_enviada[0];
+			}
+			else{
+				$parametro=$campo_tipo[1];
+				$valor=$texto;
+			}
+			
+			if($condicion == 'LIKE'){
+				$sentencia = $parametro." like '%".$valor."%' ";
+			}
+			else{
+				if($condicion == 'IGUAL'){
+					$sentencia = $parametro." = '".$valor."' ";
+				}else{
+					if($condicion == 'DISTINTO'){
+						$sentencia = $parametro." <> '".$valor."' ";
+					}else{
+						if($condicion == 'MAY_O_IGUAL'){
+							$sentencia = $parametro." >= '".$valor."' ";
+						}else{
+							if($condicion == 'MEN_O_IGUAL'){
+								$sentencia = $parametro." <= '".$valor."' ";
+							}else{
+								if($condicion == 'MAY'){
+									$sentencia = $parametro." > '".$valor."' ";
+								}else{
+									if($condicion == 'MEN'){
+										$sentencia = $parametro." < '".$valor."' ";
+									}else{
+										if($condicion == 'COM_CON'){
+											$sentencia = $parametro." like '".$valor."%' ";
+										}else{
+											if($condicion == 'TER_CON'){
+												$sentencia = $parametro." like '%".$valor."' ";
+											}else{
+												if($condicion == 'NO_COM_CON'){
+													$sentencia = $parametro." not like '".$valor."%' ";
+												}else{
+													if($condicion == 'NO_TER_CON'){
+														$sentencia = $parametro." not like '%".$valor."' ";
+													}else{
+														if($condicion == 'NO_LIKE'){
+															$sentencia = $parametro." not like '%".$valor."%' ";
+														}else{
+															if($condicion == 'AGRUPA'){
+																$sentencia = $parametro." in ( '".$valor."') ";
+															}
+														}
+													}
+												}		
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}	
+			}
+			$consulta = unserialize($this->session->userdata('consulta'));
+			$consulta->addConditions($sentencia);
+			$consulta->addAndOr($oradio);
+			$this->session->set_userdata('consulta',serialize($consulta)); 
+		}
+		echo '<body onload="opener.ViewConditions();window.close();"></body>';
+	}
+	
+	function del_condiciones($id)
+	{
+		$this->load->library('consulta');
+		$consulta = unserialize($this->session->userdata('consulta'));
+		$consulta->delConditions($id);
+		$this->session->set_userdata('consulta',serialize($consulta)); 
+	}
+	
+	function del_and_or($id)
+	{
+		$this->load->library('consulta');
+		$consulta = unserialize($this->session->userdata('consulta'));
+		$consulta->delAndOr($id);
+		$this->session->set_userdata('consulta',serialize($consulta)); 
+	}
+	
+	function add_parentesis($parentesis)
+	{
+		$this->load->library('consulta');
+		$consulta = unserialize($this->session->userdata('consulta'));
+		$consulta->addValueParentesis($parentesis);
+		$this->session->set_userdata('consulta',serialize($consulta));
+		echo '<body onload="opener.ViewConditions();"></body>';
+	}
+	
+	function load_consulta()
+	{
+		$this->load->library('consulta');
+		$consulta = unserialize($this->session->userdata('consulta'));
+		$consulta->loadQuery();
+		echo $consulta->getFinalQuery();
+	}
+	
+	function load_preview()
+	{
+		$this->load->library('consulta');
+		$consulta = unserialize($this->session->userdata('consulta'));
+		$consulta->loadQuery();
+		$sql = $consulta->getFinalQuery();
+		$sql = $sql;
+		//echo $sql; 
+		
+		$tipo_campana = $this->session->userdata('campana_tipo');
+		$id_campana = $this->session->userdata('campana_id_campana');
+		$data["deudas"] = $this->lista->count_deudas($id_campana, $tipo_campana);
+		$data["records"] = $this->lista->count_records($sql);
+		$data["clientes"] = $this->lista->get_clientes_preview($sql);
+		$this->load->view('ajax_lista/preview',$data);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+}
+?>
+	

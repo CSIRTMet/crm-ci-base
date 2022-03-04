@@ -1,0 +1,90 @@
+
+.Div_tablas {
+     width:420px;
+     height:230px;
+     background-color:#F2F2F2;
+     overflow:auto;
+	 border: double #036;
+	 
+}
+
+.Div_tablas_condicionReciclar {
+     width:420px;
+     height:150px;
+     background-color:#F2F2F2;
+     overflow:auto;
+	 color:#000;
+	 padding:3px;
+	 
+}
+
+TABLE {	/*WIDTH: 100%;	*/
+BORDER-COLLAPSE: collapse}
+
+TBODY TR TD {	PADDING-RIGHT: 0px;	
+PADDING-LEFT: 0px;	
+PADDING-BOTTOM: 0px;	
+PADDING-TOP: 0px;	
+TEXT-ALIGN: left}
+
+THEAD TR {	BACKGROUND: #4d4d4d}
+
+THEAD TR TH {	BORDER-RIGHT: #808080 1px solid;	
+PADDING-RIGHT: 5px;	
+BORDER-TOP: #808080 2px solid;	
+PADDING-LEFT: 10px;	BACKGROUND: #4d4d4d;	
+PADDING-BOTTOM: 5px;	
+MARGIN: 3px 2px;	
+COLOR: #fff;	
+PADDING-TOP: 5px;	
+BORDER-BOTTOM: #000 2px solid;	
+TEXT-ALIGN: center;
+background-color:#69C}
+
+THEAD TR TH.path {	WIDTH: 50%;	
+TEXT-ALIGN: left}
+
+THEAD TR TH.collno {	WIDTH: 6%}
+
+THEAD TR TH.colrev {	WIDTH: 6%}
+
+THEAD TR TH.colauth {	WIDTH: 6%}
+
+THEAD TR TH.colcode {	WIDTH: 73%}
+
+TBODY TR TD.code {	TEXT-ALIGN: left}
+
+TBODY TR TD.code PRE {	BORDER-RIGHT: #f0f0f0 1px solid;	
+BORDER-TOP: #f0f0f0 1px solid;	
+PADDING-LEFT: 3px;	
+BORDER-LEFT: #f0f0f0 1px solid;	
+BORDER-BOTTOM: #f0f0f0 1px solid;	
+BACKGROUND-COLOR: #f8f8f8}
+
+
+TBODY TR TD.path {	TEXT-ALIGN: left}
+
+TBODY TR TH.path {	TEXT-ALIGN: left}
+
+TBODY TR TD.path {	PADDING-RIGHT: 0px;	
+PADDING-LEFT: 0px;	PADDING-BOTTOM: 0px;	
+PADDING-TOP: 0px}
+
+
+TBODY TR.row0 TD {	BACKGROUND-COLOR: #f0f0f0}
+
+TBODY TR.row1 TD {	BACKGROUND-COLOR: #f8f8f8}
+
+TBODY TR.row0:hover TD {	BACKGROUND-COLOR: #e8e8e8}
+
+TBODY TR.row1:hover TD {	BACKGROUND-COLOR: #e8e8e8}
+
+
+.aLogout {
+	color: #000000;
+	text-decoration: none;
+	font-weight: bold;
+	background-color: #9ed3fe;
+	padding: 1px;
+	cursor: hand;
+}

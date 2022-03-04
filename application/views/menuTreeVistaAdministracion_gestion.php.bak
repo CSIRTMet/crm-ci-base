@@ -1,0 +1,37 @@
+<?php
+	$tipo_usuario = $this->session->userdata('tipo_usuario');
+	$tipo_campana = $this->session->userdata('campana_tipo');
+?>
+		<div class="divFormsBox" id="rol_x">
+			<?php
+			if($tipo_usuario == 2  && $tipo_campana == 2){
+			?>
+			<li class='open' >
+			<span class="folder" style='cursor: pointer'>&nbsp;&nbsp;Modulo Auditoria</span>
+			<ul>
+			    <li id="menuFormulario_" class="menuFormulario"><span class="file"><a href="#" id="a_idform"  class="menu_2" onclick="get_buscar_gestiones_campana_mkt()" title="Buscar gestiones campa&ntilde;a">Buscar Gestiones Campa&ntilde;a</a></span></li>
+				
+			</ul>
+			</li>
+            
+            
+            
+            
+            <li class='open' >
+			<span class="folder" style='cursor: pointer'>&nbsp;&nbsp;Gestiones</span>
+			<ul>
+			    <li id="menuFormulario_" class="menuFormulario"><span class="file"><a href="<?php echo site_url() ?>/principal_gestion/load_exportar_gestion/venta" id="a_idform"  class="menu_2" title="">Ventas</a></span></li>
+                 <li id="menuFormulario_" class="menuFormulario"><span class="file"><a href="<?php echo site_url() ?>/principal_gestion/load_exportar_gestion/hoy" id="a_idform"  class="menu_2" title="">Hoy</a></span></li>
+                  <li id="menuFormulario_" class="menuFormulario"><span class="file"><a href="<?php echo site_url() ?>/principal_gestion/load_exportar_gestion/ayer" id="a_idform"  class="menu_2"  title="">Ayer</a></span></li>
+                   <li id="menuFormulario_" class="menuFormulario"><span class="file"><a href="<?php echo site_url() ?>/principal_gestion/load_exportar_gestion/todo" id="a_idform"  class="menu_2" title="">Todo</a></span></li>
+				
+			</ul>
+            
+			</li>
+            
+            
+            
+			<?php
+			}
+			?>
+		</div>
